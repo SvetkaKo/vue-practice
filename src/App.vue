@@ -46,7 +46,6 @@ export default {
       };
 
       console.log("enter", el);
-      done();
     },
     afterEnter(el) {
       console.log("after enter", el);
@@ -62,7 +61,6 @@ export default {
         done();
       };
       console.log("leave", el);
-      done();
     },
     afterLeave(el) {
       console.log("after leave", el);
