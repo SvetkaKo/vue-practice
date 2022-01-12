@@ -13,14 +13,28 @@
   </transition> -->
 
   <!-- 3. Animations with JS -->
-  <!--     @before-enter="beforeEnter"
-    @after-enter="afterEnter"
-    @before-leave="beforeLeave"
-    @after-leave="afterLeave" -->
-  <transition @enter="enter" @leave="leave" :css="false">
+  <!--@before-enter="beforeEnter"
+      @after-enter="afterEnter"
+      @before-leave="beforeLeave"
+      @after-leave="afterLeave" -->
+  <!-- <transition @enter="enter" @leave="leave" :css="true" name="fade">
     <h2 v-if="flag">Hey</h2>
-  </transition>
+  </transition> -->
 
+  <!-- 4. Animating a list -->
+  <button @click="addItem">Add</button>
+
+  <ul>
+    <transition-group
+      name="fade"
+      enter-active-class="animate__animated animate__flipInX"
+      leave-active-class="animate__animated animate__flipOutX"
+    >
+      <li v-for="(item, index) in list" :key="item" @click="removeItem(index)">
+        {{ item }}
+      </li>
+    </transition-group>
+  </ul>
   <p></p>
 </template>
 
@@ -30,9 +44,20 @@ export default {
   data() {
     return {
       flag: false,
+      list: ["Wake up", "Make a bad", "Brew a coffee"],
     };
   },
   methods: {
+    addItem() {
+      console.log(this.list);
+      const item = Math.floor(Math.random() * 10);
+      const index = Math.floor(Math.random() * this.list.length);
+      this.list.splice(index, 0, item);
+    },
+    removeItem(index) {
+      this.list.splice(index, 1);
+    },
+
     // 3. Animations with JS
     beforeEnter(el) {
       console.log("before enter", el);
@@ -44,7 +69,6 @@ export default {
       animation.onfinish = () => {
         done();
       };
-
       console.log("enter", el);
     },
     afterEnter(el) {
@@ -70,6 +94,14 @@ export default {
 </script>
 
 <style>
+.animate__flipInX {
+  position: absolute;
+}
+
+.animate__animated {
+  animation-duration: 1s;
+}
+
 /* 1. Animating with CSS transitions */
 .fade-enter-from {
   opacity: 0;
@@ -81,12 +113,22 @@ export default {
   transition: all 0.5s linear;
   opacity: 0;
 }
+.fade-move {
+  transition: all 0.5s linear;
+}
+.fade-leave-active {
+  position: absolute;
+}
 
 /* 2. Animating with CSS animations */
 h2 {
   width: 400px;
   padding: 20px;
   margin: 20px;
+}
+li {
+  font-size: 22px;
+  cursor: pointer;
 }
 
 .zoom-enter-active {
